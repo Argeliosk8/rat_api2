@@ -1,0 +1,12 @@
+# api env file
+.env
+
+# dependencies
+/node_modules
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+.elasticbeanstalk
+node_modules
+uploads
