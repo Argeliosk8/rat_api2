@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
 const candidateRouter = require('./routes/candidate.js')
+const userRouter = require('./routes/user.js')
 const { MongoClient } = require("mongodb")
-const { findAllUsers } = require('./utils/usersUtils')
-
+const bodyParser = require('body-parser')
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors());
@@ -19,25 +19,25 @@ const usersCollection = client.db(db).collection("users")
 
 // Mongodb config
 
+// Middleware
+
+app.use(bodyParser.json())
+
+// Middleware
+
 
 // Routers 
 
 app.use('/candidate', candidateRouter);
+app.use('/user', userRouter);
 
 // Routers
 
-app.get('/hello', (req, res) => {
-    return res.status(200).send("hello mundo")
-})
 
 app.get('/', (req, res) => {
     return res.status(200).send("todo ok")
 })
 
-app.get('/users', async (req, res) => {
-    const users = await findAllUsers()
-    return res.status(200).send(users)
-})
 
 console.log(process.env.port)
 
