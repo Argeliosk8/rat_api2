@@ -27,3 +27,13 @@ exports.addUser = async (newUser) => {
     const result = await usersColl.insertOne(newUser)
     return result
 }
+
+exports.findOneUser = async (email) => {
+    const result = await usersColl.findOne({email: email})
+    return result
+  }
+
+exports.hashCheck = async (pwd, hash) => {
+    const result = bcrypt.compareSync(pwd, hash)
+    return result
+}

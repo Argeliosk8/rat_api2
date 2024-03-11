@@ -1,7 +1,21 @@
 const express = require('express');
-const { addUser, findAllUsers} = require('./usersUtils')
+const { addUser, findAllUsers, findOneUser, hashCheck } = require('./usersUtils')
 
 userRouter = express.Router();
+
+userRouter.post('/login', async (req, res) => {
+    const { email, password } = req.body
+    
+    const user = await findOneUser(email)
+
+    if(!user) return res.status(403).send({msg: "user not found" })
+
+    const resultHashCheck = await hashCheck(password, user.pwd)
+    
+    if(!resultHashCheck) return res.status(403).send({msg: "hash check failed" })
+
+    res.status(200).json({msg: "hash check passed"})
+})
 
 userRouter.post('/signup', async (req, res) => {
     const newUser = req.body
