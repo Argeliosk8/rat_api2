@@ -5,6 +5,8 @@ const client = new MongoClient(uri)
 const database = client.db("dat")
 const usersColl = database.collection("users")
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
+const util = require('util');
 
 exports.findAllUsers = async () => {
     try {
@@ -36,4 +38,16 @@ exports.findOneUser = async (email) => {
 exports.hashCheck = async (pwd, hash) => {
     const result = bcrypt.compareSync(pwd, hash)
     return result
+}
+
+
+exports.getToken = async (user) => {
+    const signAsync = util.promisify(jwt.sign);
+   try {
+    const token = await signAsync(user, process.env.JWT_SECRET)
+    return token
+   } catch (error) {
+    console.error('Error:', err);
+    throw err;
+   }
 }

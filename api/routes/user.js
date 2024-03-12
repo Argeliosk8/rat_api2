@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, findAllUsers, findOneUser, hashCheck } = require('./usersUtils')
+const { addUser, findAllUsers, findOneUser, hashCheck, getToken } = require('./usersUtils')
 
 userRouter = express.Router();
 
@@ -14,7 +14,11 @@ userRouter.post('/login', async (req, res) => {
     
     if(!resultHashCheck) return res.status(403).send({msg: "hash check failed" })
 
-    res.status(200).json({msg: "hash check passed"})
+    const token = await getToken(user)
+    
+    if(!token) return res.status(403).send({msg: "token request failed" })
+    
+    res.status(200).json({token: token})
 })
 
 userRouter.post('/signup', async (req, res) => {
