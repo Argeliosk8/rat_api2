@@ -1,6 +1,6 @@
 const express = require('express');
 const fs = require('fs')
-const { submitCandidate, multerUploadResume, s3UploadResume } = require('./candidateUtils');
+const { submitCandidate, multerUploadResume, s3UploadResume, findOneCandidate } = require('../utils/candidateUtils');
 
 
 
@@ -37,6 +37,7 @@ candidateRouter.post('/upload', multerUploadResume.single('resume'), async (req,
 
 candidateRouter.post('/submit', async (req, res) => {
     const newCandidate = req.body
+    newCandidate.user_id = req.user._id
     console.log(newCandidate)
     try {
         const result = await submitCandidate(newCandidate)
@@ -46,6 +47,12 @@ candidateRouter.post('/submit', async (req, res) => {
         res.status(400).send(result)
     }
     
+})
+
+candidateRouter.get('/findone', async (req, res) => {
+    const result = await findOneCandidate()
+    result.viewer = req.user.profile['first_name']
+    res.status(200).json(result)
 })
 
 

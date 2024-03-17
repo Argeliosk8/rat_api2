@@ -51,3 +51,27 @@ exports.getToken = async (user) => {
     throw err;
    }
 }
+
+exports.verifyToken = (req, res, next) => {
+    //const candidate = req.candidate
+    const bearerHeader = req.headers['authorization']
+    //console.log(candidate)
+    if(typeof bearerHeader !== 'undefined') {
+      const token = bearerHeader.split(" ")[1]
+      jwt.verify(token, process.env.JWT_SECRET, (error, authData) => {
+        if(error) {
+          console.log('Unable to verify token')
+          res.status(403).json({ msg: 'Unable to verify token'})        
+        } else {
+          console.log(`User verified with email: ${authData.email}`)
+          req.user = authData
+          console.log(req.user)
+          next();
+        }
+      })
+    } else {
+      console.log('Web token not received')
+      res.status(403).json({ msg: 'Web token not received'})
+      
+    }  
+  }

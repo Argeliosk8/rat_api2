@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, findAllUsers, findOneUser, hashCheck, getToken } = require('./usersUtils')
+const { addUser, findAllUsers, findOneUser, hashCheck, getToken, verifyToken } = require('../utils/usersUtils')
 
 userRouter = express.Router();
 
@@ -18,7 +18,7 @@ userRouter.post('/login', async (req, res) => {
     
     if(!token) return res.status(403).send({msg: "token request failed" })
     
-    res.status(200).json({token: token})
+    res.status(200).json({user: user, token: token})
 })
 
 userRouter.post('/signup', async (req, res) => {
@@ -33,7 +33,7 @@ userRouter.post('/signup', async (req, res) => {
     }
 })
 
-userRouter.get('/all', async (req, res) => {
+userRouter.get('/all', verifyToken, async (req, res) => {
     const users = await findAllUsers()
     return res.status(200).send(users)
 })

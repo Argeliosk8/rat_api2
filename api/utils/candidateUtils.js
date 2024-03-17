@@ -48,3 +48,8 @@ exports.submitCandidate = async (newCandidate) => {
     const result = await candidatesColl.insertOne(newCandidate)
       return result
   }
+
+exports.findOneCandidate = async () => {
+  const result = await candidatesColl.findOne()
+  return result
+}

@@ -5,6 +5,7 @@ const candidateRouter = require('./routes/candidate.js')
 const userRouter = require('./routes/user.js')
 const { MongoClient } = require("mongodb")
 const bodyParser = require('body-parser')
+const { verifyToken } = require('./utils/usersUtils.js')
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors());
@@ -28,7 +29,7 @@ app.use(bodyParser.json())
 
 // Routers 
 
-app.use('/candidate', candidateRouter);
+app.use('/candidate', verifyToken, candidateRouter);
 app.use('/user', userRouter);
 
 // Routers
