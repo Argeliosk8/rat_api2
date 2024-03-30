@@ -7,8 +7,7 @@ const { MongoClient } = require("mongodb")
 const bodyParser = require('body-parser')
 const { verifyToken } = require('./utils/usersUtils.js')
 const app = express();
-const port = process.env.PORT || 3000;
-app.use(cors());
+const port = process.env.PORT;
 
 // Mongodb config
 
@@ -23,7 +22,8 @@ const usersCollection = client.db(db).collection("users")
 // Middleware
 
 app.use(bodyParser.json())
-
+const corsOptions = { origin: 'http://localhost:3000' }
+app.use(cors(corsOptions))
 // Middleware
 
 
