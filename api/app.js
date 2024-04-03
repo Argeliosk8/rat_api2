@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config()
 const candidateRouter = require('./routes/candidate.js')
 const userRouter = require('./routes/user.js')
+const projectRouter = require('./routes/project.js')
 const jobRouter = require('./routes/job.js')
 const { MongoClient } = require("mongodb")
 const bodyParser = require('body-parser')
@@ -31,7 +32,8 @@ app.use(cors(corsOptions))
 // Routers 
 
 app.use('/candidate', verifyToken, candidateRouter);
-app.use('/job', verifyToken, jobRouter)
+app.use('/job', verifyToken, jobRouter);
+app.use('/project', verifyToken, projectRouter);
 app.use('/user', userRouter);
 
 // Routers
