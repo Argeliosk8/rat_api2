@@ -22,3 +22,10 @@ exports.findOneProject = async (id) => {
     const result = await projectsColl.insertOne(newJob)
     return result
   }
+
+  exports.replaceOneProject = async (id, newProject)=> {
+    const objectId = new ObjectId(id) 
+    const filter = {_id: objectId}
+    const result = await projectsColl.replaceOne(filter, newProject)
+    return result
+  }
