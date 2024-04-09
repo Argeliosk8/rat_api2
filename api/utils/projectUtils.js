@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb")
+const { MongoClient, ObjectId  } = require("mongodb")
 require('dotenv').config()
 const uri = process.env.URI
 const client = new MongoClient(uri)
@@ -12,8 +12,9 @@ exports.findAllProjects = async () => {
   return allProjects
 }
 
-exports.findOneJob = async (req) => {
-    const result = await jobsColl.findOne({req: req})
+exports.findOneProject = async (id) => {
+    const objectId = new ObjectId(id)
+    const result = await projectsColl.findOne({_id: objectId})
     return result
   }
 

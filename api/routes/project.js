@@ -1,13 +1,14 @@
 const express = require('express');
-const { addOneProject, findAllProjects } = require('../utils/projectUtils.js')
+const { addOneProject, findAllProjects, findOneProject } = require('../utils/projectUtils.js')
 projectRouter = express.Router();
 
 
 //This route handles the submission of a new candidate to the mongoDB
 
-projectRouter.get('/findone', async (req, res) => {
-    const {requisition} = req.body
-    const result = await findOneJob(requisition)
+projectRouter.post('/findone', async (req, res) => {
+    const {id} = req.body
+    console.log(id)
+    const result = await findOneProject(id)
     console.log(result)
     res.status(200).json(result)
 })
