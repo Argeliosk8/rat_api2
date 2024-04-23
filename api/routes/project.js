@@ -1,5 +1,5 @@
 const express = require('express');
-const { addOneProject, findAllProjects, findOneProject, replaceOneProject } = require('../utils/projectUtils.js')
+const { addOneProject, findAllProjects, findOneProject, replaceOneProject, addProjectJob } = require('../utils/projectUtils.js')
 projectRouter = express.Router();
 
 
@@ -41,13 +41,25 @@ projectRouter.put('/replaceone/:id', async(req, res)=>{
     const {id} = req.params
     const newProject = req.body
     newProject.user_id = req.user._id
-    newProject.owner = req.user.email
+    if (newProject.owner === null) newProject.owner = req.user.email
     try {
         const result = await replaceOneProject(id, newProject)
         res.status(200).json(result)
     } catch (error) {
         console.log(error)
         res.status(400).json("error adding the new project")
+    }
+})
+
+projectRouter.put('/updateone/:id', async(req, res)=>{
+    const {id} = req.params
+    const newJob = req.body  
+    try {
+        const result = await addProjectJob(id, newJob)
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json("error adding the job to the project")
     }
 })
 

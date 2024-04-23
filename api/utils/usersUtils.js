@@ -13,7 +13,7 @@ exports.findAllUsers = async () => {
         const query = {}
         const options = {
             sort: {"email": 1},
-            projection: {_id: 0, email: 1, 'profile.first_name': 1}
+            projection: {_id: 0, email: 1, 'profile.first_name': 1, 'profile.last_name': 1}
         }
 
         const users = await usersColl.find(query, options).toArray();

@@ -1,5 +1,6 @@
 const express = require('express');
 const { findOneJob, addOneJob, findAllJobs } = require('../utils/jobUtils')
+//const { addProjectJob } = require('../utils/projectUtils')
 jobRouter = express.Router();
 
 
@@ -22,12 +23,14 @@ jobRouter.get('/findall', async (req, res) => {
     }
 })
 
-jobRouter.post('/addone', async(req, res)=>{
+
+jobRouter.post('/addone/:projectid', async(req, res)=>{
     const newJob = req.body
     newJob.creator = req.user.email
-    newJob.user_id = req.user._id
+    newJob.user_id = req.user._id 
+    const {projectid} = req.params
     try {
-        const result = await addOneJob(newJob)
+        const result = await addOneJob(projectid, newJob)
         res.status(200).json(result)
     } catch (error) {
         console.error(error)

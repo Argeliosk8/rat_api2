@@ -2,9 +2,8 @@
   "name": "rat_api2",
   "version": "1.0.0",
   "description": "rat_api",
-  "main": "app.js",
   "scripts": {
-    "test": "node app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb")
+const { MongoClient, MongoError, ObjectId } = require("mongodb")
 require('dotenv').config()
 const uri = process.env.URI
 const client = new MongoClient(uri)
@@ -38,7 +38,46 @@ exports.findOneJob = async (req) => {
     return result
   }
 
-  exports.addOneJob = async (newJob)=> {
-    const result = await jobsColl.insertOne(newJob)
-    return result
+  exports.addOneJob = async (id, newJob)=> {
+    const session = client.startSession();
+    try {
+      session.startTransaction();
+      //this session add a new record to the jobs collections
+      const jobColl = client.db("dat").collection("jobs")
+      const jobResult = await jobColl.insertOne(newJob, { session })
+      
+      //inserts the returned job id in the projects collection
+      const projectColl = client.db("dat").collection("projects")
+      const objectId = new ObjectId(id) 
+      const filter = {_id: objectId}      
+      const options = { upsert: true };    
+      const updateDoc = {
+        $push: {
+          jobs: jobResult.insertedId
+        },
+      }; 
+      
+      const projectResult = await projectColl.updateOne(filter, updateDoc, options, { session })
+      console.log(projectResult)
+      
+      await session.commitTransaction();
+      console.log('Transaction successfully committed.');
+      return projectResult
+    } catch (error) {
+      /*
+      Handle any exceptions thrown during the transaction and end the
+      transaction. Roll back all the updates performed in the transaction.
+    */
+      if (error instanceof MongoError && error.hasErrorLabel('UnknownTransactionCommitResult')) {
+        // Add your logic to retry or handle the error
+      }
+      else if (error instanceof MongoError && error.hasErrorLabel('TransientTransactionError')) {
+        // Add your logic to retry or handle the error
+      } else {
+        console.log('An error occured in the transaction, performing a data rollback:' + error);
+      }
+      await session.abortTransaction();    
+    } finally {
+      await session.endSession();
+    }
   }
