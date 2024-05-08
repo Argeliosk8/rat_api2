@@ -59,7 +59,7 @@ exports.findOneJob = async (req) => {
       
       const projectResult = await projectColl.updateOne(filter, updateDoc, options, { session })
       console.log(projectResult)
-      
+      projectResult.insertedId = jobResult.insertedId
       await session.commitTransaction();
       console.log('Transaction successfully committed.');
       return projectResult
