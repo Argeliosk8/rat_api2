@@ -53,7 +53,7 @@ exports.findOneJob = async (req) => {
       const options = { upsert: true };    
       const updateDoc = {
         $push: {
-          jobs: jobResult.insertedId
+          jobs: newJob
         },
       }; 
       
