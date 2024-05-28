@@ -33,6 +33,16 @@ exports.findAllJobs = async () => {
   return allJobs
 }
 
+exports.findJobsByProject = async (project_id) => {
+  const query = {project_id: project_id}
+  const options = {
+    sort: {"name": 1},
+    projection: {_id: 0}
+  }
+  const allJobs = await jobsColl.find(query, options).toArray();
+  return allJobs
+}
+
 exports.findOneJob = async (req) => {
     const result = await jobsColl.findOne({req: req})
     return result
