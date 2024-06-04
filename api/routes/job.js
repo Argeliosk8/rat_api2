@@ -1,5 +1,5 @@
 const express = require('express');
-const { findOneJob, addOneJob, findAllJobs, findJobsByProject } = require('../utils/jobUtils')
+const { findOneJob, addOneJob, findAllJobs, findJobsByProject, findOneJobById } = require('../utils/jobUtils')
 //const { addProjectJob } = require('../utils/projectUtils')
 jobRouter = express.Router();
 
@@ -46,5 +46,13 @@ jobRouter.get('/findbyprojectid/:projectid', async (req, res) => {
     console.log(result)
     res.status(200).json(result)
 })
+
+jobRouter.get('/findonebyid/:jobid', async (req, res) => {
+    const {jobid} = req.params
+    const result = await findOneJobById(jobid)
+    console.log(result)
+    res.status(200).json(result)
+})
+
 
 module.exports = jobRouter
