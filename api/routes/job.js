@@ -1,5 +1,5 @@
 const express = require('express');
-const { findOneJob, addOneJob, findAllJobs, findJobsByProject, findOneJobById } = require('../utils/jobUtils')
+const { replaceOneJob, findOneJob, addOneJob, findAllJobs, findJobsByProject, findOneJobById } = require('../utils/jobUtils')
 //const { addProjectJob } = require('../utils/projectUtils')
 jobRouter = express.Router();
 
@@ -54,5 +54,17 @@ jobRouter.get('/findonebyid/:jobid', async (req, res) => {
     res.status(200).json(result)
 })
 
+jobRouter.put('/replacebyid/:jobid', async (req, res) => {
+    const {jobid} = req.params
+    const updatedJob = req.body 
+    try {
+        const result = await replaceOneJob(jobid, updatedJob)
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json("error updating the job")
+    }
+    
+})
 
 module.exports = jobRouter

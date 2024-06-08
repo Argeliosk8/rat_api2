@@ -97,3 +97,10 @@ exports.findOneJob = async (req) => {
       await session.endSession();
     }
   }
+
+  exports.replaceOneJob = async (id, updatedJob)=> {
+    const objectId = new ObjectId(id)
+    const filter = {_id: objectId }
+    const result = await jobsColl.replaceOne(filter, updatedJob)
+    return result
+  }
