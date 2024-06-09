@@ -54,7 +54,7 @@ jobRouter.get('/findonebyid/:jobid', async (req, res) => {
     res.status(200).json(result)
 })
 
-jobRouter.put('/replacebyid/:jobid', async (req, res) => {
+jobRouter.put('/updateone/:jobid', async (req, res) => {
     const {jobid} = req.params
     const updatedJob = req.body 
     try {
