@@ -4,6 +4,7 @@ const uri = process.env.URI
 const client = new MongoClient(uri)
 const database = client.db("dat")
 const jobsColl = database.collection("jobs")
+const actColl = database.collection("activity")
 const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 const util = require('util');
@@ -27,7 +28,6 @@ exports.findAllJobs = async () => {
   const query = {}
   const options = {
     sort: {"name": 1},
-    projection: {_id: 0}
   }
   const allJobs = await jobsColl.find(query, options).toArray();
   return allJobs
@@ -104,3 +104,4 @@ exports.findOneJob = async (req) => {
     const result = await jobsColl.replaceOne(filter, updatedJob)
     return result
   }
+
