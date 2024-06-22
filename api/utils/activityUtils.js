@@ -24,3 +24,12 @@ const actColl = database.collection("activity")
     console.log(result)
     return result
   }
+
+  exports.findActivityByJobIdAndDate = async (date, job_id)=> {
+    const objectId = new ObjectId(job_id)
+    const query = {job_id: objectId, date: date}
+    console.log(query)
+    const result = await actColl.findOne(query)
+    console.log(result)
+    return result
+  }
