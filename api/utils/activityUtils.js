@@ -7,10 +7,7 @@ const actColl = database.collection("activity")
 
   exports.addActivity = async (newAct, jobid)=> {
     const objectId = new ObjectId(jobid)
-    const currentDate = new Date();
-    const dateOnly = currentDate.toISOString().split('T')[0];
     newAct.job_id = objectId
-    newAct.sub_date = dateOnly
 
     const result = await actColl.insertOne(newAct)
     console.log(result)
