@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { addActivity, findActivityByJobId, findActivityByJobIdAndDate } = require('../utils/activityUtils.js')
+const { addActivity, findActivityByJobId, findActivityByJobIdAndDate, replaceOneActivity } = require('../utils/activityUtils.js')
 
 activityRouter = express.Router();
 
@@ -40,6 +40,19 @@ activityRouter.post('/findone', async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(400).json("error finding your activity")
+    }
+    
+})
+
+activityRouter.put('/updateone/:job_id', async (req, res) => {
+    const {job_id} = req.params
+    const newAct = req.body 
+    try {
+        const result = await replaceOneActivity(job_id, newAct)
+        res.status(200).json(result)
+    } catch (error) {
+        console.log(error)
+        res.status(400).json("error updating the job")
     }
     
 })

@@ -30,3 +30,13 @@ const actColl = database.collection("activity")
     console.log(result)
     return result
   }
+
+  exports.replaceOneActivity = async (job_id, newAct)=> {
+    const objectId = new ObjectId(job_id) 
+    const date = newAct.date
+    newAct.job_id = objectId
+    console.log(newAct)
+    const filter = {job_id: objectId, date: date}
+    const result = await actColl.replaceOne(filter, newAct)
+    return result
+  }
