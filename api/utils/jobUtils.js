@@ -24,8 +24,10 @@ exports.findAllUsers = async () => {
     }
 }
 
-exports.findAllJobs = async () => {
-  const query = {}
+exports.findAllJobs = async (userEmail) => {
+  const query = {
+    users: { $in: [userEmail] } 
+  };
   const options = {
     sort: {"name": 1},
   }

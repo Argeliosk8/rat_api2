@@ -65,7 +65,6 @@ exports.verifyToken = (req, res, next) => {
         } else {
           console.log(`User verified with email: ${authData.email}`)
           req.user = authData
-          console.log(req.user)
           next();
         }
       })

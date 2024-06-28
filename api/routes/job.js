@@ -14,8 +14,10 @@ jobRouter.get('/findone', async (req, res) => {
 })
 
 jobRouter.get('/findall', async (req, res) => {
+    console.log(req.user.email)
+    const userEmail = req.user.email
     try {
-        const result = await findAllJobs()
+        const result = await findAllJobs(userEmail)
         console.log(result)
         res.status(200).json(result)
     } catch (error) {

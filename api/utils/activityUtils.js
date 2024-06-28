@@ -14,17 +14,17 @@ const actColl = database.collection("activity")
     return result
   }
 
-  exports.findActivityByJobId = async (jobid)=> {
+  exports.findActivityByJobId = async (jobid, userEmail)=> {
     const objectId = new ObjectId(jobid)
-    const query = {job_id: objectId}
+    const query = {job_id: objectId, user_email: userEmail}
     const result = await actColl.find(query).toArray()
     console.log(result)
     return result
   }
 
-  exports.findActivityByJobIdAndDate = async (date, job_id)=> {
+  exports.findActivityByJobIdAndDate = async (date, job_id, userEmail)=> {
     const objectId = new ObjectId(job_id)
-    const query = {job_id: objectId, date: date}
+    const query = {job_id: objectId, date: date, user_email: userEmail}
     console.log(query)
     const result = await actColl.findOne(query)
     console.log(result)
