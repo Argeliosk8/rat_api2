@@ -31,12 +31,20 @@ const actColl = database.collection("activity")
     return result
   }
 
-  exports.replaceOneActivity = async (job_id, newAct)=> {
-    const objectId = new ObjectId(job_id) 
-    const date = newAct.date
-    newAct.job_id = objectId
+  exports.replaceOneActivity = async (act_id, newAct)=> {
+    const objectId = new ObjectId(act_id) 
+    const jobID = new ObjectId(newAct.job_id)
+    newAct.job_id = jobID
     console.log(newAct)
-    const filter = {job_id: objectId, date: date}
+    const filter = {_id: objectId}
     const result = await actColl.replaceOne(filter, newAct)
+    return result
+  }
+
+  exports.findActivityByJobAndDate = async (jobid, userEmail, days)=> {
+    const objectId = new ObjectId(jobid)
+    const query = {user_email: userEmail, job_id: objectId, date: {$in: days}}
+    const result = await actColl.find(query).toArray()
+    console.log(result)
     return result
   }

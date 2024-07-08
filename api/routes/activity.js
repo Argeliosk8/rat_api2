@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { addActivity, findActivityByJobId, findActivityByJobIdAndDate, replaceOneActivity } = require('../utils/activityUtils.js')
+const { addActivity, findActivityByJobId, findActivityByJobIdAndDate, replaceOneActivity, findActivityByJobAndDate } = require('../utils/activityUtils.js')
 
 activityRouter = express.Router();
 
@@ -19,11 +19,13 @@ activityRouter.post('/add/:jobid', async (req, res) => {
     
 })
 
-activityRouter.get('/find/:jobid', async (req, res) => {
+activityRouter.post('/find/:jobid', async (req, res) => {
     const {jobid} = req.params
     const userEmail = req.user.email
+    const {days} = req.body
+    console.log(days)
     try {
-        const result = await findActivityByJobId(jobid, userEmail)
+        const result = await findActivityByJobAndDate(jobid, userEmail, days)
         res.status(200).json(result)
     } catch (error) {
         console.log(error)
@@ -45,11 +47,12 @@ activityRouter.post('/findone', async (req, res) => {
     
 })
 
-activityRouter.put('/updateone/:job_id', async (req, res) => {
-    const {job_id} = req.params
+activityRouter.put('/updateone/:act_id', async (req, res) => {
+    const {act_id} = req.params
     const newAct = req.body 
+    newAct.user_email = req.user.email
     try {
-        const result = await replaceOneActivity(job_id, newAct)
+        const result = await replaceOneActivity(act_id, newAct)
         res.status(200).json(result)
     } catch (error) {
         console.log(error)
