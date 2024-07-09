@@ -6,6 +6,7 @@ const userRouter = require('./routes/user.js')
 const projectRouter = require('./routes/project.js')
 const jobRouter = require('./routes/job.js')
 const activityRouter = require('./routes/activity.js')
+const templatesRouter = require('./routes/templates.js')
 const { MongoClient } = require("mongodb")
 const bodyParser = require('body-parser')
 const { verifyToken } = require('./utils/usersUtils.js')
@@ -37,6 +38,7 @@ app.use('/job', verifyToken, jobRouter);
 app.use('/project', verifyToken, projectRouter);
 app.use('/user', userRouter);
 app.use('/activity', verifyToken, activityRouter);
+app.use('/templates', verifyToken, templatesRouter)
 
 // Routers
 
